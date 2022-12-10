@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 
+use Session;
+
 use App\Exports\MahasiswaExport;
+use App\Imports\MahasiswaImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
@@ -56,4 +59,30 @@ class MahasiswaController extends Controller
     {
         return Excel::download(new MahasiswaExport, 'mahasiswa.xlsx');
     }
+
+    public function import(Request $request)
+	{
+		// validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+
+		// menangkap file excel
+		$file = $request->file('file');
+
+		// membuat nama file unik
+		$nama_file = rand().$file->getClientOriginalName();
+
+		// upload ke folder file_siswa di dalam folder public
+		$file->move('file_siswa',$nama_file);
+
+		// import data
+		Excel::import(new MahasiswaImport, public_path('/file_siswa/'.$nama_file));
+
+		// notifikasi dengan session
+		Session::flash('sukses','Data Mahasiswa Berhasil Diimport!');
+
+		// alihkan halaman kembali
+		return redirect('/list');
+	}
 }

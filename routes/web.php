@@ -9,3 +9,4 @@ Route::post('/', [MahasiswaController::class, 'create']);
 Route::delete('/{id}', [MahasiswaController::class, 'destroy']);
 
 Route::get('/siswa/export_excel', [MahasiswaController::class, 'export']);
+Route::post('/siswa/import_excel', [MahasiswaController::class, 'import']);
