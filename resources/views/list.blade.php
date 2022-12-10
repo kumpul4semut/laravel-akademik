@@ -23,8 +23,6 @@
         </center>
         <a href="/siswa/export_excel" class="btn btn-success my-3" target="_blank">EXPORT
             EXCEL</a>
-
-
         </head>
 
         <body class="min-vh-100">
